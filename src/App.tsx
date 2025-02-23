@@ -1,24 +1,26 @@
-import { Button } from "./components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "./components/ui/card";
-import { Textarea } from "./components/ui/textarea";
+import ChallengeDetail from "./components/ChallengeDetail";
+import { CodeEditor } from "./components/CodeEditor";
+import HomeSection from "./components/Home";
+import useChallengeSelection from "./hooks/useChallengeSelection";
 
-function App() {
+export default function App() {
+  const { setCurrentChallengeId, currentChallenge } = useChallengeSelection();
+
   return (
-    <Card className="w-96">
-      <CardHeader>shadcn/uiの表示確認</CardHeader>
-      <CardContent>
-        <Textarea />
-      </CardContent>
-      <CardFooter>
-        <Button>Submit</Button>
-      </CardFooter>
-    </Card>
+    <div className="min-h-screen grid grid-cols-2">
+      {currentChallenge ? (
+        <ChallengeDetail
+          challenge={currentChallenge}
+          results={null}
+          onBack={() => setCurrentChallengeId(null)}
+        />
+      ) : (
+        <HomeSection onChallengeSelect={setCurrentChallengeId} />
+      )}
+      <CodeEditor
+        currentChallenge={currentChallenge}
+        onRun={(code) => console.log(code)}
+      />
+    </div>
   );
 }
-
-export default App;
