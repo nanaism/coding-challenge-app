@@ -9,6 +9,8 @@
 
 `Coding Challenge App` は、AtCoderのようにプログラミングの問題に挑戦し、その場でコードを書いて実行・採点ができるWebアプリケーションです。
 
+![FireShot Webpage Capture 028 - 'Coding Challenge' - nanaism github io](https://github.com/user-attachments/assets/5d753fe6-2bcb-4e46-83fe-eb41ff3cbe4c)
+
 ---
 
 ## 🚀 デモサイト (Live Demo)
