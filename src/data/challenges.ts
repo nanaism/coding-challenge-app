@@ -15,6 +15,7 @@ export const challenges: Challenge[] = [
       { input: [-1, 1], expected: 0 },
     ],
     hint: "return 文を使って結果を返すことを忘れずに！",
+    difficulty: "Easy", // 追加
   },
   {
     id: "arraySum",
@@ -29,6 +30,7 @@ export const challenges: Challenge[] = [
       { input: [[]], expected: 0 },
     ],
     hint: "reduce メソッドを使うと簡単に実装できます！",
+    difficulty: "Easy", // 追加
   },
   {
     id: "fizzBuzz",
@@ -63,5 +65,6 @@ export const challenges: Challenge[] = [
       },
     ],
     hint: "3の倍数でFizz、5の倍数でBuzz、両方の倍数でFizzBuzzを出力します。",
+    difficulty: "Medium", // 追加
   },
 ];

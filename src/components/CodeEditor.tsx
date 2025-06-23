@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import useCodeEditor from "@/hooks/useCodeEditor";
 import { Challenge } from "@/types/challenges";
-import { RotateCcw } from "lucide-react";
+import Editor from "@monaco-editor/react";
+import { Play, RotateCcw } from "lucide-react";
+import { useEffect } from "react";
 
 interface CodeEditorProps {
   currentChallenge: Challenge | undefined;
@@ -12,36 +13,50 @@ interface CodeEditorProps {
 export const CodeEditor = ({ currentChallenge, onRun }: CodeEditorProps) => {
   const { code, setCode, handleReset } = useCodeEditor(currentChallenge);
 
+  // Ctrl+Enterで実行するショートカット
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        if (currentChallenge) onRun(code);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [code, onRun, currentChallenge]);
+
   return (
-    <div className="flex flex-col">
-      <div className="bg-[#1e1e1e] flex-1">
-        <div className="flex items-center space-x-2 p-4 border-b border-gray-700 bg-[#252526]">
-          <span className="h-3 w-3 rounded-full bg-[#FF6B2C]" />
-          <span className="h-3 w-3 rounded-full bg-[#FFD600]" />
-          <span className="h-3 w-3 rounded-full bg-[#6CD076]" />
-        </div>
-        <Textarea
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          className="w-full h-[calc(100%-40px)] resize-none bg-[#1e1e1e] text-gray-100 font-mono border-0 focus-visible:ring-0 rounded-none p-4"
-          spellCheck={false}
-        />
-      </div>
-      <div className="bg-[#252526] p-3 border-t border-gray-700 flex items-center justify-between">
+    <div className="flex flex-col h-full bg-[#1e1e1e] rounded-lg overflow-hidden">
+      <Editor
+        height="100%"
+        language="javascript"
+        theme="vs-dark"
+        value={code}
+        onChange={(value) => setCode(value || "")}
+        options={{
+          fontSize: 14,
+          minimap: { enabled: true },
+          wordWrap: "on",
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+        }}
+      />
+      <div className="bg-background p-2 border-t border-border flex items-center justify-between">
         <Button
           variant="ghost"
           onClick={handleReset}
-          className="text-gray-400 hover:text-gray-200 hover:bg-gray-700 flex items-center space-x-2"
+          className="flex items-center space-x-2"
         >
           <RotateCcw className="w-4 h-4" />
-          <span className="text-sm">Reset</span>
+          <span>Reset</span>
         </Button>
         <Button
           onClick={() => onRun(code)}
-          className="bg-indigo-500 hover:bg-indigo-400 text-white px-6"
+          className="bg-green-600 hover:bg-green-500 text-white px-6 flex items-center space-x-2"
           disabled={!currentChallenge}
         >
-          Run Code
+          <Play className="w-4 h-4" />
+          <span>Run</span>
         </Button>
       </div>
     </div>

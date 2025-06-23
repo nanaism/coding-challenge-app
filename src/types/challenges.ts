@@ -21,8 +21,8 @@ interface ChallengeBase<T extends ChallengeId> {
   template: string;
   testCases: ChallengeTestCase<T>[];
   hint: string;
+  difficulty: "Easy" | "Medium" | "Hard"; // この行を追加
 }
-
 // テスト結果の型
 type TestResultBase<T extends ChallengeId> = {
   input?: Parameters<ChallengeFunctions[T]>;
